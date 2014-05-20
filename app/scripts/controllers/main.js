@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('ngDay2App')
-  .controller('BlogCtrl', function ($scope, $location, BlogSvc) {
+  .controller('PostsCtrl', function ($scope, $location, PostsSvc) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -13,8 +13,21 @@ angular.module('ngDay2App')
     	$location.path('/new');
     };
     $scope.newPost = function(post) {
-    	BlogSvc.create(post)
+    	PostsSvc.create(post)
     	$location.path('/blog');
     };
-    $scope.posts = BlogSvc.query();
+    $scope.posts = PostsSvc.query();
+  })
+  .controller('PostCtrl', function($scope, $location, $routeParams, PostSvc) {
+
+  	$scope.post = PostSvc.show({ id: $routeParams.id });
+  	$scope.delete = function() { 
+  		PostSvc.delete({ id: $routeParams.id });
+  		$location.path('/blog');
+  	};
+  	$scope.edit = function() {
+  		PostSvc.edit($scope.post);
+  		$location.path('/blog');
+  	};
+
   });
